@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<textarea v-model.trim="deckListString" name="deck-list" id="deck-list" cols="30" rows="50"></textarea>
-		<div v-for="card in deckList.cards">
-			{{ card.board }}: {{ card.count }} {{ card.name }}
+		<div v-for="card in cards">
+			{{ card.board }}: {{ card.count }} {{ card.name }} ({{ card.cmc }})
 		</div>
 	</div>
 </template>
@@ -17,11 +17,21 @@
 				deckListString: ''
 			}
 		},
-		computed: {
-			deckList() {
-				let res = this.deckListString.split('\n').map(cards.importCard);
-				return {
-					cards: res
+		asyncComputed: {
+			cards: {
+				default: [],
+				get() {
+					return Promise.all(this.deckListString.trim().split('\n')
+						.map(cards.importCard)
+						.map(e => {
+							return this.$http.get('http://mtg-deck-analyser.firebaseio.com/cards.json?orderBy="$key"&startAt="' + e.name + '"&endAt="' + e.name + '"')
+								.then(r => {
+									return {
+										...e,
+										...r.body[e.name],
+									};
+								});
+						}));
 				}
 			}
 		}
