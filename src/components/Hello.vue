@@ -1,14 +1,17 @@
 <template>
-	<div>
-		<textarea v-model.trim="deckListString" name="deck-list" id="deck-list" cols="30" rows="50"></textarea>
-		<div v-for="card in cards">
-			{{ card.board }}: {{ card.count }} {{ card.name }} ({{ card.cmc }})
+	<div class="row">
+		<div class="col s6">
+			<textarea v-model.trim="deckListString" name="deck-list" id="deck-list" cols="30" rows="50"></textarea>
+		</div>
+		<div class="col s6">
+			<decklist :decklist="cards"></decklist>
 		</div>
 	</div>
 </template>
 
 <script>
 	import * as cards from '../card';
+	import decklist from './Decklist.vue'
 
 	export default {
 		name: 'hello',
@@ -34,6 +37,9 @@
 						}));
 				}
 			}
+		},
+		components: {
+			decklist
 		}
 	}
 </script>
