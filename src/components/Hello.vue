@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div class="col s6">
-			<textarea v-model.trim="deckListString" name="deck-list" id="deck-list" cols="30" rows="50"></textarea>
+			<textarea v-model.trim="deckListString" name="deck-list" id="deck-list" cols="30" rows="50" :change="saveDecklist()"></textarea>
 		</div>
 		<div class="col s6">
 			<decklist :decklist="cards"></decklist>
@@ -39,6 +39,14 @@
 						}));
 				}
 			}
+		},
+		methods: {
+			saveDecklist() {
+				localStorage.decklistString = this.deckListString;
+			}
+		},
+		created() {
+			this.deckListString = localStorage.decklistString || "";
 		},
 		components: {
 			decklist
