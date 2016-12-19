@@ -24,7 +24,9 @@
 			cards: {
 				default: [],
 				get() {
-					return Promise.all(this.deckListString.trim().split('\n')
+					return Promise.all(this.deckListString.split('\n')
+						.map(e => e.trim())
+						.filter(e => e.length > 0)
 						.map(cards.importCard)
 						.map(e => {
 							return this.$http.get('http://mtg-deck-analyser.firebaseio.com/cards.json?orderBy="$key"&startAt="' + e.name + '"&endAt="' + e.name + '"')
