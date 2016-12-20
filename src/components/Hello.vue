@@ -1,17 +1,23 @@
 <template>
-	<div class="row">
-		<div class="col s6">
-			<textarea v-model.trim="deckListString" name="deck-list" id="deck-list" cols="30" rows="50" :change="saveDecklist()"></textarea>
+	<div>
+		<div class="row">
+			<deckgraph :decklist="cards" variable="name"></deckgraph>
 		</div>
-		<div class="col s6">
-			<decklist :decklist="cards"></decklist>
+		<div class="row">
+			<div class="col s6">
+				<textarea v-model.trim="deckListString" name="decklist" id="decklist" cols="30" rows="50" :change="saveDecklist()"></textarea>
+			</div>
+			<div class="col s6">
+				<decklist :decklist="cards"></decklist>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import * as cards from '../card';
+	import * as cards from '../card'
 	import decklist from './Decklist.vue'
+	import deckgraph from './DeckGraph.vue'
 
 	export default {
 		name: 'hello',
@@ -49,7 +55,8 @@
 			this.deckListString = localStorage.decklistString || "";
 		},
 		components: {
-			decklist
+			decklist,
+			deckgraph
 		}
 	}
 </script>
