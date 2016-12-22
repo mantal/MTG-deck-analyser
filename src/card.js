@@ -7,7 +7,7 @@ export function importCard(card) {
 	let cardName = card.replace(/^\w+:/, '').trim();
 
 	m = cardName.match(/^\d+/g);
-	let n = m ? m[0] : 1;
+	let n = m ? parseInt(m[0]): 1;
 	if (n <= 0)
 		console.log('bad number: ', n);//TODO
 
