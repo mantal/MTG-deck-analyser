@@ -1,8 +1,32 @@
-export function importCard(card) {
+import Vue from 'vue';
+
+export function fetchCard(card) {
+	"use strict";
+
+	return Vue.http.get('http://mtg-deck-analyser.firebaseio.com/cards.json?orderBy="$key"&startAt="' + card.name + '"&endAt="' + card.name + '"')
+		.then(r => {
+			return {
+				...card,
+				...r.body[card.name],
+			};
+		})
+		.then(extendCard);
+}
+
+export function extendCard(card) {
+	"use strict";
+
+	if (!card.colors) {
+		card.colors = ['colorless'];
+	}
+	return card;
+}
+
+export function parseCard(card) {
 	"use strict";
 
 	let m = card.match(/(^\w+):/);
-	const b = m ? importBoard(m[1]) : 'Mainboard';
+	const b = m ? parseBoard(m[1]) : 'Mainboard';
 
 	let cardName = card.replace(/^\w+:/, '').trim();
 
@@ -18,7 +42,7 @@ export function importCard(card) {
 	};
 }
 
-export function importBoard(board) {
+export function parseBoard(board) {
 	"use strict";
 	switch (board.toLocaleUpperCase().replace(/ /g, '')) {
 		case 'SB':
