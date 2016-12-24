@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<div class="row">
-			<deckgraph :decklist="cards" variable="name"></deckgraph>
+			<chart :decklist="cards" variable="colors" chart="pie"></chart>
+			<chart :decklist="cards" variable="types" chart="bar"></chart>
+			<chart :decklist="cards" variable="subtypes" chart="bar" :filter="c => c.types && c.types.indexOf('Land')"></chart>
+
 		</div>
 		<div class="row">
 			<div class="col s6">
@@ -17,7 +20,7 @@
 <script>
 	import * as cards from '../card'
 	import decklist from './Decklist.vue'
-	import deckgraph from './DeckGraph.vue'
+	import chart from './Chart.vue'
 
 	export default {
 		name: 'hello',
@@ -56,7 +59,7 @@
 		},
 		components: {
 			decklist,
-			deckgraph
+			chart
 		}
 	}
 </script>
