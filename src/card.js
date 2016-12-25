@@ -5,6 +5,8 @@ export function fetchCard(card) {
 
 	return Vue.http.get('http://mtg-deck-analyser.firebaseio.com/cards.json?orderBy="$key"&startAt="' + card.name + '"&endAt="' + card.name + '"')
 		.then(r => {
+			if (!r.body[card.name])
+				return Promise.reject(card);
 			return {
 				...card,
 				...r.body[card.name],
@@ -16,9 +18,6 @@ export function fetchCard(card) {
 export function extendCard(card) {
 	"use strict";
 
-	if (!card.colors) {
-		card.colors = ['colorless'];
-	}
 	return card;
 }
 

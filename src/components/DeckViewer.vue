@@ -1,15 +1,11 @@
 <template>
 	<div>
 		<div class="row">
+			<div class="">
+				<decklist :decklist="deck.decklist" @update="updateDecklist"></decklist>
+			</div>
 		</div>
 		<div class="row">
-			<div class="col s6">
-				<textarea v-model.trim="deckListString" name="decklist" id="decklist" cols="30" rows="50" :change="saveDecklist()"></textarea>
-				<div class="input-field">
-			</div>
-			<div class="col s6">
-				<decklist :decklist="cards"></decklist>
-			</div>
 			<chart :decklist="deck.decklist" variable="colors" chart="pie"></chart>
 			<chart :decklist="deck.decklist" variable="types" chart="bar"></chart>
 			<chart :decklist="deck.decklist" variable="subtypes" chart="bar" :filter="c => c.types && c.types.indexOf('Land')"></chart>
@@ -27,28 +23,45 @@
 		name: 'DeckViewer',
 		data() {
 			return {
-				deckListString: ''
-			}
-		},
-		asyncComputed: {
-			cards: {
-				default: [],
-				get() {
-					return Promise.all(this.deckListString.split('\n')
-						.map(e => e.trim())
-						.filter(e => e.length > 0)
-						.map(cards.parseCard)
-						.map(cards.fetchCard));
+				deck: {
+					name: '',
+					decklist: []
 				}
 			}
 		},
 		methods: {
-			saveDecklist() {
-				localStorage.decklistString = this.deckListString;
+			saveDeck() {
+				localStorage.deck = JSON.stringify(this.deck);
+			},
+			importFromFile(e) {
+				let file = e.target.files[0];
+				if (!file)
+					return;
+
+				let reader = new FileReader();
+				reader.onload = e => {
+					let deckListString = e.target.result;
+
+					Promise.all(deckListString.split('\n')
+						.map(e => e.trim())
+						.filter(e => e.length > 0)
+						.map(cards.parseCard)
+						.map(cards.fetchCard))
+					.then(decklist => {
+						this.decklist = decklist;
+						this.saveDeck();
+					});
+				};
+				reader.readAsText(file);
+			},
+			updateDecklist(decklist) {
+				this.deck.decklist = decklist;
+				this.saveDeck();
 			}
 		},
 		created() {
-			this.deckListString = localStorage.decklistString || "";
+			if (localStorage.deck)
+				this.deck = JSON.parse(localStorage.deck);
 		},
 		components: {
 			decklist,
