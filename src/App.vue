@@ -1,27 +1,29 @@
 <template>
-  <div id="app">
-    <hello></hello>
-  </div>
+	<div id="app">
+		<deck-viewer></deck-viewer>
+	</div>
 </template>
 
 <script>
-import Hello from './components/Hello'
+	import 'materialize-css/bin/materialize.css'
+	import 'materialize-css/bin/materialize.js'
+	import DeckViewer from './components/DeckViewer'
 
-export default {
-  name: 'app',
-  components: {
-    Hello
-  }
-}
+	export default {
+		name: 'app',
+		components: {
+			DeckViewer
+		}
+	}
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+	#app {
+	  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
+	  text-align: center;
+	  color: #2c3e50;
+	  margin-top: 60px;
+	}
 </style>

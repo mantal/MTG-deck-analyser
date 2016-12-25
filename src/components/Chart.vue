@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<div :id="id"></div>
-		<div id="test"></div>
-		<div id="aaa"></div>
+		<div :id="id" class="deck-chart"></div>
 	</div>
 </template>
 
@@ -68,7 +66,7 @@
 						.width(800).height(200)
 						.xUnits(dc.units.ordinal)
 						.x(d3.scale.ordinal())
-						.renderlet(chart => { chart.selectAll('g.x text').attr('transform', 'translate(-10,10) rotate(315)'); })
+						.renderlet(chart => { chart.selectAll('g.x text').attr('transform', 'translate(-20,10) rotate(310)'); })
 						.dimension(dim)
 						.group(dim.group().reduceSum(e => { return e.count }));
 						break;
@@ -89,3 +87,9 @@
 		}
 	}
 </script>
+
+<style>
+	.deck-chart svg{
+		overflow: visible;
+	}
+</style>

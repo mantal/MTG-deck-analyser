@@ -1,18 +1,19 @@
 <template>
 	<div>
 		<div class="row">
-			<chart :decklist="cards" variable="colors" chart="pie"></chart>
-			<chart :decklist="cards" variable="types" chart="bar"></chart>
-			<chart :decklist="cards" variable="subtypes" chart="bar" :filter="c => c.types && c.types.indexOf('Land')"></chart>
-
 		</div>
 		<div class="row">
 			<div class="col s6">
 				<textarea v-model.trim="deckListString" name="decklist" id="decklist" cols="30" rows="50" :change="saveDecklist()"></textarea>
+				<div class="input-field">
 			</div>
 			<div class="col s6">
 				<decklist :decklist="cards"></decklist>
 			</div>
+			<chart :decklist="deck.decklist" variable="colors" chart="pie"></chart>
+			<chart :decklist="deck.decklist" variable="types" chart="bar"></chart>
+			<chart :decklist="deck.decklist" variable="subtypes" chart="bar" :filter="c => c.types && c.types.indexOf('Land')"></chart>
+
 		</div>
 	</div>
 </template>
@@ -23,7 +24,7 @@
 	import chart from './Chart.vue'
 
 	export default {
-		name: 'hello',
+		name: 'DeckViewer',
 		data() {
 			return {
 				deckListString: ''
