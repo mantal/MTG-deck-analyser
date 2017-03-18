@@ -1,4 +1,4 @@
-
+All-Cards-x.json
 # Created by https://www.gitignore.io/api/node,webstorm,vim
 
 ### Node ###
@@ -116,3 +116,5 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+/static/AllCards-x.json
+/static/AllCards-x-sanitized.json
