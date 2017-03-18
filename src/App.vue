@@ -8,11 +8,15 @@
 	import 'materialize-css/bin/materialize.css'
 	import 'materialize-css/bin/materialize.js'
 	import DeckViewer from './components/DeckViewer'
+	import * as db from './cache';
 
 	export default {
 		name: 'app',
 		components: {
 			DeckViewer
+		},
+		mounted() {
+			db.init();
 		}
 	}
 </script>

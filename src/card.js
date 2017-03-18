@@ -1,23 +1,29 @@
 import Vue from 'vue';
+import * as cache from './cache';
 
 export function fetchCard(card) {
 	"use strict";
 
-	return Vue.http.get('http://mtg-deck-analyser.firebaseio.com/cards.json?orderBy="$key"&startAt="' + card.name + '"&endAt="' + card.name + '"')
-		.then(r => {
-			if (!r.body[card.name])
-				return Promise.reject(card);
-			return {
-				...card,
-				...r.body[card.name],
-			};
+	return cache.fetch(card.name)
+		.then(c => c, () => {
+			return Vue.http.get('http://mtg-deck-analyser.firebaseio.com/cards.json?orderBy="$key"&startAt="' + card.name + '"&endAt="' + card.name + '"')
+				.then(r => {
+					if (r.body[card.name] === undefined)
+						return Promise.reject(card);
+					return {
+						...card,
+						...r.body[card.name],
+					};
+				}).then(card => {
+					cache.put(card);
+					return card;
+				});
 		})
 		.then(extendCard);
 }
 
 export function extendCard(card) {
 	"use strict";
-
 	return card;
 }
 
