@@ -1,18 +1,18 @@
 <template>
 	<div>
-		<form @submit.prevent="addCard" class="row">
-			<div class="input-field col s6">
+		<form @submit.prevent="addCard">
+			<div class="input-field">
 				<input type="text" v-model.trim.lazy="cardInput" id="card-input" class="validate">
 				<label for="card-input">Add card</label>
 			</div>
 		</form>
-		<div class="row">
-			<div v-for="card in decklist" class="decklist-viewer">
-				<div class="col s4">{{ card.count }} {{ card.name }}</div>
-				<div class="decklist-viewer-icons s4">
-					<button @click="decreaseCardCount(card)"><i class="fa fa-minus" aria-hidden="true"></i></button>
-					<button @click="increaseCardCount(card)"><i class="fa fa-plus" aria-hidden="true"></i></button>
-					<button @click="removeCard(card)"><i class="tiny material-icons">delete</i></button>
+		<div class="decklist-viewer">
+			<div v-for="card in decklist" class="row">
+				<div class="col s8">{{ card.count }} {{ card.name }}</div>
+				<div class="decklist-viewer-icons col s4">
+					<button @click="decreaseCardCount(card)" class="btn-flat"><i class="fa fa-minus" aria-hidden="true"></i></button>
+					<button @click="increaseCardCount(card)" class="btn-flat"><i class="fa fa-plus" aria-hidden="true"></i></button>
+					<button @click="removeCard(card)" class="btn-flat"><i class="tiny material-icons">delete</i></button>
 				</div>
 			</div>
 		</div>
@@ -44,7 +44,7 @@
 					dl.push(card);
 					this.$emit('update', dl);
 				})
-				.catch(card => alert('Card not found: ' + card.name));
+				.catch(e => console.error(e));
 			},
 			removeCard(card) {
 				let dl = this.decklist.filter(c => c.name !== card.name);
@@ -72,7 +72,12 @@
 
 <style scoped>
 	.decklist-viewer {
-		text-align: left;
 		vertical-align: middle;
+	}
+	.decklist-viewer > .row {
+		margin: 0;
+	}
+	.btn-flat {
+		padding: 5px;
 	}
 </style>
